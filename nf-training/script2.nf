@@ -4,7 +4,7 @@
 params.reads = "$projectDir/data/ggal/gut_{1,2}.fq"
 params.transcriptome_file = "$projectDir/data/ggal/transcriptome.fa"
 params.multiqc = "$projectDir/multiqc"
-params.outdir = "results"
+params.outdir = "$projectDir/results"
 
 log.info """\
     R N A S E Q - N F   P I P E L I N E
@@ -32,6 +32,18 @@ process INDEX {
     """
 }
 
+
 workflow {
     index_ch = INDEX(params.transcriptome_file)
+}
+
+
+process PrintIndexChannel {
+    input:
+    path index_files from index_ch
+
+    script:
+    """
+    echo "Index files: $index_files"
+    """
 }
